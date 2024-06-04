@@ -13,6 +13,7 @@ func main() {
 	r.HandleFunc("/tasks", handlers.GetTasks).Methods("GET")
 	r.HandleFunc("/tasks", handlers.AddTask).Methods("POST")
 	r.HandleFunc("/tasks/{id}", handlers.DeleteTask).Methods("DELETE")
+  r.HandleFunc("/checked", handlers.Checked).Methods("POST")
 
 	fs := http.FileServer(http.Dir("./static"))
 	r.PathPrefix("/").Handler(fs)
