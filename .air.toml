@@ -1,0 +1,12 @@
+# .air.toml
+
+[build]
+cmd = "go build -o ./tmp/main ./cmd/server"
+bin = "tmp/main"
+full_bin = "tmp/main"
+exclude_dir = ["tmp"]
+include_ext = ["go", "tmpl", "html"]
+
+[log]
+level = "info"
+
