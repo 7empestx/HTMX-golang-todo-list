@@ -1,0 +1,14 @@
+{
+  "hosted-zone:account=659946347679:domainName=grantstarkman.com:region=us-east-1": {
+    "Id": "/hostedzone/Z02660942J8A2F4D19HYD",
+    "Name": "grantstarkman.com."
+  },
+  "availability-zones:account=659946347679:region=us-east-1": [
+    "us-east-1a",
+    "us-east-1b",
+    "us-east-1c",
+    "us-east-1d",
+    "us-east-1e",
+    "us-east-1f"
+  ]
+}

@@ -1,0 +1,4 @@
+python3.10 -m venv ~/.ebcli-virtual-env
+source ~/.ebcli-virtual-env/bin/activate
+eb init -p go HTMXToDoList --region us-east-2
+
