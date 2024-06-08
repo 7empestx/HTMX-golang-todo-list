@@ -30,7 +30,6 @@ fi
 # Build the Go application
 go build -o bin/application cmd/server/main.go
 echo "Go application built successfully."
-cd ..
 
 # Activate the EB CLI virtual environment
 if [ -f ~/.ebcli-virtual-env/bin/activate ]; then
@@ -44,6 +43,7 @@ fi
 echo "Deploying the application using EB CLI..."
 eb deploy
 echo "Application deployed successfully using EB CLI."
+cd ..
 
 echo "Synthesizing the CDK application..."
 cd cdk
