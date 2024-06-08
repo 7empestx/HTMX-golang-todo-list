@@ -56,4 +56,3 @@ jobs:
         run: |
           chmod +x recursiveBuild.sh
           ./recursiveBuild.sh
-
