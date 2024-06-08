@@ -51,7 +51,7 @@ cd cdk
 # Clean npm cache and install dependencies
 echo "Cleaning npm cache and installing dependencies..."
 rm -rf node_modules package-lock.json
-npm ci
+npm i
 
 # Synthesize the CDK application
 cdk synth
