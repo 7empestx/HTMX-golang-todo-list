@@ -47,7 +47,7 @@ cd ..
 
 # Restart the Elastic Beanstalk environment
 echo "Restarting the Elastic Beanstalk environment..."
-eb restart
+aws elasticbeanstalk restart-app-server --environment-id e-rvzd3wseg5 --region us-east-2
 echo "Elastic Beanstalk environment restarted successfully."
 
 echo "Synthesizing the CDK application..."
