@@ -45,6 +45,11 @@ eb deploy
 echo "Application deployed successfully using EB CLI."
 cd ..
 
+# Restart the Elastic Beanstalk environment
+echo "Restarting the Elastic Beanstalk environment..."
+eb restart
+echo "Elastic Beanstalk environment restarted successfully."
+
 echo "Synthesizing the CDK application..."
 cd cdk
 
