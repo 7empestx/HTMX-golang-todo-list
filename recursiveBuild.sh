@@ -4,6 +4,10 @@ set -e # Exit immediately if a command exits with a non-zero status.
 
 echo "Starting build and deployment script..."
 
+# Update AWS CLI to the latest version
+echo "Updating AWS CLI..."
+pip install --upgrade awscli
+
 # Verify that AWS CLI is installed
 if ! command -v aws &> /dev/null
 then
