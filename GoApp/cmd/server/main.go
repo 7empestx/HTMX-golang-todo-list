@@ -20,5 +20,5 @@ func main() {
 	fs := http.FileServer(http.Dir("./static"))
 	r.PathPrefix("/").Handler(fs)
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	log.Fatal(http.ListenAndServe(":5000", r))
 }
