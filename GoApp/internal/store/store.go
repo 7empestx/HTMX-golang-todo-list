@@ -7,6 +7,26 @@ var (
 	nextID = 1
 )
 
+func FilterIncompleteTasks() []models.Task {
+  var incompleteTasks []models.Task
+  for _, task := range tasks {
+    if !task.Completed {
+      incompleteTasks = append(incompleteTasks, task)
+    }
+  }
+  return incompleteTasks
+}
+
+func FilterCompletedTasks() []models.Task {
+  var completedTasks []models.Task
+  for _, task := range tasks {
+    if task.Completed {
+      completedTasks = append(completedTasks, task)
+    }
+  }
+  return completedTasks
+}
+
 func Checked(id int) {
   for i, task := range tasks {
     if task.ID == id {
