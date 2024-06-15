@@ -21,5 +21,6 @@ func main() {
 	r.HandleFunc("/checked", handlers.Checked).Methods("POST")
 	r.HandleFunc("/delete/{id}", handlers.DeleteTask).Methods("POST")
 
+  // Serve static files  
 	log.Fatal(http.ListenAndServe(":5000", r))
 }
