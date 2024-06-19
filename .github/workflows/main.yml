@@ -53,14 +53,9 @@ jobs:
           aws-region: us-east-2
           ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN }}
 
-      - name: Set up environment 
+      - name: Run build and deployment script
         run: |
           touch .env
           echo ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN=${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN }} >> .env
-
-      - name: Run build and deployment script
-        run: |
           chmod +x recursiveBuild.sh
           ./recursiveBuild.sh
-        with:
-          ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN }}
