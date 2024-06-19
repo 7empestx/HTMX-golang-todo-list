@@ -51,6 +51,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
+          ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN }}
 
       - name: Set up environment 
         run: |
@@ -61,3 +62,5 @@ jobs:
         run: |
           chmod +x recursiveBuild.sh
           ./recursiveBuild.sh
+        with:
+          ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN }}
