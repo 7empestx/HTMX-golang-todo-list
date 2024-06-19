@@ -8,6 +8,8 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env: 
+      ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN }}
 
     steps:
       - name: Checkout code
@@ -51,11 +53,8 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-          ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN: ${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN }}
 
       - name: Run build and deployment script
         run: |
-          touch .env
-          echo ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN=${{ secrets.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN }} >> .env
           chmod +x recursiveBuild.sh
           ./recursiveBuild.sh
