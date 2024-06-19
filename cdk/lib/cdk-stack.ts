@@ -13,7 +13,7 @@ export class CdkStack extends Stack {
     const hostedZoneDomainName = "grantstarkman.com";
 
     // Must hardcode the domain name of the Elastic Beanstalk environment since its setup manually
-    const elasticBeanstalkEnvironmentDomain = "gohtmx-env3.eba-f8gm2apa.us-east-2.elasticbeanstalk.com"
+    const elasticBeanstalkEnvironmentDomain = process.env.ELASTIC_BEANSTALK_ENVIRONMENT_DOMAIN || "";
     const htmxGoDomainName = "gohtmxtodo.grantstarkman.com";
 
     let hostedZone: route53.IHostedZone;
