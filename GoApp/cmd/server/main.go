@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	dataSourceName := "root:password@tcp(127.0.0.1:3306)/tododb"
+	dataSourceName := "root@tcp(127.0.0.1:3306)/tododb"
 	store.InitDB(dataSourceName)
 
 	r := mux.NewRouter()
@@ -20,6 +20,9 @@ func main() {
 	r.HandleFunc("/incomplete", handlers.FilterIncompleteTasks).Methods("GET")
 	r.HandleFunc("/checked", handlers.Checked).Methods("POST")
 	r.HandleFunc("/delete/{id}", handlers.DeleteTask).Methods("POST")
+
+	fs := http.FileServer(http.Dir("./static"))
+	r.PathPrefix("/").Handler(fs)
 
   // Serve static files  
 	log.Fatal(http.ListenAndServe(":5000", r))
