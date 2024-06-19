@@ -8,3 +8,4 @@ tmp/main
 !.elasticbeanstalk/*.global.yml
 
 GoApp/bin
+venv/
