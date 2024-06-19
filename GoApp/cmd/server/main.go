@@ -1,8 +1,10 @@
 package main
 
 import (
+  "fmt"
 	"log"
 	"net/http"
+  "os"
 
 	"github.com/7empestx/GoHTMXToDoList/internal/handlers"
 	"github.com/7empestx/GoHTMXToDoList/internal/store"
@@ -10,7 +12,14 @@ import (
 )
 
 func main() {
-	dataSourceName := "root@tcp(127.0.0.1:3306)/tododb"
+
+	dbHost := os.Getenv("RDS_HOSTNAME")
+	dbName := os.Getenv("RDS_DB_NAME")
+	dbUser := os.Getenv("RDS_USERNAME")
+	dbPassword := os.Getenv("RDS_PASSWORD")
+
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s)/%s", dbUser, dbPassword, dbHost, dbName)
+  fmt.Println(dataSourceName)
 	store.InitDB(dataSourceName)
 
 	r := mux.NewRouter()

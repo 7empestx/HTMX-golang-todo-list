@@ -1,0 +1,353 @@
+Retrieving logs...
+============= i-04dfeac75cacba1f8 ==============
+----------------------------------------
+/var/log/web.stdout.log
+----------------------------------------
+Jun 19 04:26:50 ip-172-31-14-42 web[29442]: 2024/06/19 04:26:50 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:26:50 ip-172-31-14-42 web[29455]: 2024/06/19 04:26:50 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:26:50 ip-172-31-14-42 web[29465]: 2024/06/19 04:26:50 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:26:51 ip-172-31-14-42 web[29474]: 2024/06/19 04:26:51 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:26:51 ip-172-31-14-42 web[29483]: 2024/06/19 04:26:51 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:36:39 ip-172-31-14-42 web[30278]: /bin/sh: line 1: bin/application: cannot execute binary file: Exec format error
+Jun 19 04:36:39 ip-172-31-14-42 web[30288]: /bin/sh: line 1: bin/application: cannot execute binary file: Exec format error
+Jun 19 04:36:39 ip-172-31-14-42 web[30294]: /bin/sh: line 1: bin/application: cannot execute binary file: Exec format error
+Jun 19 04:36:39 ip-172-31-14-42 web[30301]: /bin/sh: line 1: bin/application: cannot execute binary file: Exec format error
+Jun 19 04:36:40 ip-172-31-14-42 web[30308]: /bin/sh: line 1: bin/application: cannot execute binary file: Exec format error
+Jun 19 04:39:06 ip-172-31-14-42 web[30805]: 2024/06/19 04:39:06 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:39:07 ip-172-31-14-42 web[30818]: 2024/06/19 04:39:07 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:39:07 ip-172-31-14-42 web[30828]: 2024/06/19 04:39:07 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:39:07 ip-172-31-14-42 web[30837]: 2024/06/19 04:39:07 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:39:08 ip-172-31-14-42 web[30846]: 2024/06/19 04:39:08 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:40:10 ip-172-31-14-42 web[31329]: 2024/06/19 04:40:10 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:40:10 ip-172-31-14-42 web[31342]: 2024/06/19 04:40:10 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:40:11 ip-172-31-14-42 web[31352]: 2024/06/19 04:40:11 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:40:11 ip-172-31-14-42 web[31361]: 2024/06/19 04:40:11 dial tcp 127.0.0.1:3306: connect: connection refused
+Jun 19 04:40:11 ip-172-31-14-42 web[31371]: 2024/06/19 04:40:11 dial tcp 127.0.0.1:3306: connect: connection refused
+
+
+----------------------------------------
+/var/log/eb-engine.log
+----------------------------------------
+2024/06/19 04:40:08.917552 [INFO] Executing instruction: stop X-Ray
+2024/06/19 04:40:08.917555 [INFO] stop X-Ray ...
+2024/06/19 04:40:08.917563 [INFO] Running command: systemctl show -p PartOf xray.service
+2024/06/19 04:40:08.930695 [WARN] stopProcess Warning: process xray is not registered 
+2024/06/19 04:40:08.930726 [INFO] Running command: systemctl stop xray.service
+2024/06/19 04:40:08.944698 [INFO] Executing instruction: stop proxy
+2024/06/19 04:40:08.944730 [INFO] Running command: systemctl show -p PartOf httpd.service
+2024/06/19 04:40:08.954486 [WARN] deregisterProcess Warning: process httpd is not registered, skipping...
+
+2024/06/19 04:40:08.954513 [INFO] Running command: systemctl show -p PartOf nginx.service
+2024/06/19 04:40:08.967477 [WARN] deregisterProcess Warning: process nginx is not registered, skipping...
+
+2024/06/19 04:40:08.967503 [INFO] Executing instruction: FlipApplication
+2024/06/19 04:40:08.967507 [INFO] fetching environment variables...
+2024/06/19 04:40:08.967533 [INFO] found go.mod file
+2024/06/19 04:40:08.967695 [INFO] Purge old process...
+2024/06/19 04:40:08.967712 [INFO] Running command: systemctl stop eb-app.target
+2024/06/19 04:40:08.976225 [INFO] Running command: systemctl show -p ConsistsOf eb-app.target | cut -d= -f2
+2024/06/19 04:40:08.985939 [INFO] web.service
+
+2024/06/19 04:40:08.985963 [INFO] deregistering process: web
+2024/06/19 04:40:08.985973 [INFO] Running command: systemctl show -p PartOf web.service
+2024/06/19 04:40:08.996323 [INFO] Running command: systemctl is-active web.service
+2024/06/19 04:40:09.003754 [INFO] Running command: systemctl disable web.service
+2024/06/19 04:40:09.302910 [INFO] Removed "/etc/systemd/system/multi-user.target.wants/web.service".
+
+2024/06/19 04:40:09.302986 [INFO] Running command: systemctl daemon-reload
+2024/06/19 04:40:09.574012 [INFO] Running command: systemctl reset-failed
+2024/06/19 04:40:09.583168 [INFO] Running command: systemctl is-active web.service
+2024/06/19 04:40:09.591094 [INFO] Process web has been fully terminated
+2024/06/19 04:40:09.591119 [INFO] All processes have been fully terminated
+2024/06/19 04:40:09.591123 [INFO] Removing /var/app/current/ if it exists
+2024/06/19 04:40:09.594051 [INFO] Renaming /var/app/staging/ to /var/app/current/
+2024/06/19 04:40:09.594075 [INFO] Register application processes...
+2024/06/19 04:40:09.594079 [INFO] Registering the proc: web
+
+2024/06/19 04:40:09.594089 [INFO] Running command: systemctl show -p PartOf web.service
+2024/06/19 04:40:09.605052 [INFO] Running command: systemctl daemon-reload
+2024/06/19 04:40:09.886711 [INFO] Running command: systemctl reset-failed
+2024/06/19 04:40:09.895256 [INFO] Running command: systemctl is-enabled eb-app.target
+2024/06/19 04:40:09.903867 [INFO] Running command: systemctl enable eb-app.target
+2024/06/19 04:40:10.185951 [INFO] Running command: systemctl start eb-app.target
+2024/06/19 04:40:10.196155 [INFO] Running command: systemctl enable web.service
+2024/06/19 04:40:10.521502 [INFO] Created symlink /etc/systemd/system/multi-user.target.wants/web.service → /etc/systemd/system/web.service.
+
+2024/06/19 04:40:10.521537 [INFO] Running command: systemctl show -p PartOf web.service
+2024/06/19 04:40:10.535771 [INFO] Running command: systemctl is-active web.service
+2024/06/19 04:40:10.549650 [INFO] Running command: systemctl start web.service
+2024/06/19 04:40:10.673491 [INFO] Job for web.service failed because the control process exited with error code.
+See "systemctl status web.service" and "journalctl -xeu web.service" for details.
+
+2024/06/19 04:40:10.673611 [ERROR] An error occurred during execution of command [app-deploy] - [FlipApplication]. Stop running the command. Error: Register application failed because the registration of proc web failed: 
+startProcess Failure: starting process "web" failed: Command systemctl start web.service failed with error exit status 1. Stderr:Job for web.service failed because the control process exited with error code.
+See "systemctl status web.service" and "journalctl -xeu web.service" for details.
+ 
+ 
+
+2024/06/19 04:40:10.673617 [INFO] Executing cleanup logic
+2024/06/19 04:40:10.673750 [INFO] CommandService Response: {"status":"FAILURE","api_version":"1.0","results":[{"status":"FAILURE","msg":"Engine execution has encountered an error.","returncode":1,"events":[{"msg":"Instance deployment used the commands in your 'Procfile' to initiate startup of your application.","timestamp":1718772005658,"severity":"INFO"},{"msg":"Instance deployment found and used the 'go.mod' file in your source bundle.","timestamp":1718772008967,"severity":"INFO"},{"msg":"Instance deployment failed. For details, see 'eb-engine.log'.","timestamp":1718772010673,"severity":"ERROR"}]}]}
+
+2024/06/19 04:40:10.675945 [INFO] Platform Engine finished execution on command: app-deploy
+
+2024/06/19 04:40:36.701488 [INFO] Starting...
+2024/06/19 04:40:36.701534 [INFO] Starting EBPlatform-PlatformEngine
+2024/06/19 04:40:36.701554 [INFO] reading event message file
+2024/06/19 04:40:36.701962 [INFO] Engine received EB command cfn-hup-exec
+
+2024/06/19 04:40:36.783185 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-east-2:659946347679:stack/awseb-e-rvzd3wseg5-stack/cfd084b0-2de3-11ef-a08a-02c6e45d02d9 -r AWSEBAutoScalingGroup --region us-east-2
+2024/06/19 04:40:37.147781 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-east-2:659946347679:stack/awseb-e-rvzd3wseg5-stack/cfd084b0-2de3-11ef-a08a-02c6e45d02d9 -r AWSEBBeanstalkMetadata --region us-east-2
+2024/06/19 04:40:37.481368 [INFO] checking whether command tail-log is applicable to this instance...
+2024/06/19 04:40:37.481380 [INFO] this command is applicable to the instance, thus instance should execute command
+2024/06/19 04:40:37.481383 [INFO] Engine command: (tail-log)
+
+2024/06/19 04:40:37.481441 [INFO] Executing instruction: GetTailLogs
+2024/06/19 04:40:37.481444 [INFO] Tail Logs...
+2024/06/19 04:40:37.481717 [INFO] Running command: tail -n 100 /var/log/web.stdout.log
+2024/06/19 04:40:37.484107 [INFO] Running command: tail -n 100 /var/log/eb-engine.log
+2024/06/19 04:40:37.486045 [INFO] Running command: tail -n 100 /var/log/eb-hooks.log
+2024/06/19 04:40:37.487771 [INFO] Running command: tail -n 100 /var/log/nginx/access.log
+2024/06/19 04:40:37.489504 [INFO] Running command: tail -n 100 /var/log/nginx/error.log
+2024/06/19 04:40:37.541529 [INFO] Executing cleanup logic
+2024/06/19 04:40:37.541669 [INFO] CommandService Response: {"status":"SUCCESS","api_version":"1.0","results":[{"status":"SUCCESS","msg":"Engine execution has succeeded.","returncode":0,"events":[{"msg":"Instance deployment completed successfully.","timestamp":1718772037541,"severity":"INFO"}]}]}
+
+2024/06/19 04:40:37.541689 [INFO] Platform Engine finished execution on command: tail-log
+
+2024/06/19 04:40:53.700450 [INFO] Starting...
+2024/06/19 04:40:53.700499 [INFO] Starting EBPlatform-PlatformEngine
+2024/06/19 04:40:53.700524 [INFO] reading event message file
+2024/06/19 04:40:53.700659 [INFO] Engine received EB command cfn-hup-exec
+
+2024/06/19 04:40:53.760923 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-east-2:659946347679:stack/awseb-e-rvzd3wseg5-stack/cfd084b0-2de3-11ef-a08a-02c6e45d02d9 -r AWSEBAutoScalingGroup --region us-east-2
+2024/06/19 04:40:54.166131 [INFO] Running command: /opt/aws/bin/cfn-get-metadata -s arn:aws:cloudformation:us-east-2:659946347679:stack/awseb-e-rvzd3wseg5-stack/cfd084b0-2de3-11ef-a08a-02c6e45d02d9 -r AWSEBBeanstalkMetadata --region us-east-2
+2024/06/19 04:40:54.535592 [INFO] checking whether command tail-log is applicable to this instance...
+2024/06/19 04:40:54.535606 [INFO] this command is applicable to the instance, thus instance should execute command
+2024/06/19 04:40:54.535609 [INFO] Engine command: (tail-log)
+
+2024/06/19 04:40:54.535667 [INFO] Executing instruction: GetTailLogs
+2024/06/19 04:40:54.535670 [INFO] Tail Logs...
+2024/06/19 04:40:54.536252 [INFO] Running command: tail -n 100 /var/log/web.stdout.log
+2024/06/19 04:40:54.541511 [INFO] Running command: tail -n 100 /var/log/eb-engine.log
+
+
+----------------------------------------
+/var/log/eb-hooks.log
+----------------------------------------
+go: downloading filippo.io/edwards25519 v1.1.0
+
+2024/06/19 04:38:59.428608 [INFO] Running command: .platform/hooks/prebuild/build.sh
+2024/06/19 04:39:00.225783 [INFO] Go version:
+go version go1.22.3 linux/amd64
+Current directory structure:
+.:
+Procfile
+README.md
+air.toml
+bin
+cmd
+go.mod
+go.sum
+internal
+static
+tmp
+usefullCommands
+
+./bin:
+application
+
+./cmd:
+server
+
+./cmd/server:
+main.go
+
+./internal:
+handlers
+models
+store
+
+./internal/handlers:
+task.go
+
+./internal/models:
+task.go
+
+./internal/store:
+store.go
+
+./static:
+index.html
+styles.css
+
+./tmp:
+build-errors.log
+main
+Building Go application...
+
+2024/06/19 04:40:04.927432 [INFO] Running command: .platform/hooks/prebuild/build.sh
+2024/06/19 04:40:05.658316 [INFO] Go version:
+go version go1.22.3 linux/amd64
+Current directory structure:
+.:
+Procfile
+README.md
+air.toml
+bin
+cmd
+go.mod
+go.sum
+internal
+static
+tmp
+usefullCommands
+
+./bin:
+application
+
+./cmd:
+server
+
+./cmd/server:
+main.go
+
+./internal:
+handlers
+models
+store
+
+./internal/handlers:
+task.go
+
+./internal/models:
+task.go
+
+./internal/store:
+store.go
+
+./static:
+index.html
+styles.css
+
+./tmp:
+build-errors.log
+main
+Building Go application...
+
+
+
+----------------------------------------
+/var/log/nginx/access.log
+----------------------------------------
+172.31.19.66 - - [19/Jun/2024:04:14:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:14:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:14:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:14:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:15:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:15:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:15:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:15:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:15:27 +0000] "GET / HTTP/1.1" 200 661 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36" "45.156.128.41"
+172.31.19.66 - - [19/Jun/2024:04:15:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:15:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:15:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:15:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:16:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:16:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:16:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:16:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:16:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:16:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:16:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:16:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:17:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:17:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:17:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:17:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:17:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:17:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:17:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:17:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:18:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:18:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:18:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:18:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:18:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:18:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:18:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:18:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:19:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:19:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:19:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:19:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:19:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:19:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:19:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:19:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:19:56 +0000] "GET /tasks HTTP/1.1" 200 0 "http://gohtmx-env3.eba-f8gm2apa.us-east-2.elasticbeanstalk.com/" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:127.0) Gecko/20100101 Firefox/127.0" "104.28.49.12"
+172.31.4.187 - - [19/Jun/2024:04:20:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:20:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:20:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:20:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:20:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:20:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:20:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:20:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:21:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:21:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:21:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:21:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:21:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:21:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:21:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:21:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:22:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:22:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:22:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:22:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:22:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:22:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:22:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:22:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:23:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:23:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:23:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:23:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:23:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:23:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:23:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:23:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:24:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:24:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:24:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:24:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:24:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:24:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:24:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:24:48 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:25:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:25:03 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:25:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:25:18 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:25:33 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:25:34 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:25:49 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:25:49 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:26:04 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:26:04 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:26:19 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:26:19 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.19.66 - - [19/Jun/2024:04:26:34 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+172.31.4.187 - - [19/Jun/2024:04:26:34 +0000] "GET / HTTP/1.1" 200 661 "-" "ELB-HealthChecker/2.0" "-"
+
+
+----------------------------------------
+/var/log/nginx/error.log
+----------------------------------------
+2024/06/19 04:01:32 [warn] 3328#3328: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2024/06/19 04:01:32 [warn] 3361#3361: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2024/06/19 04:01:32 [warn] 3362#3362: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2024/06/19 04:22:31 [warn] 4671#4671: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2024/06/19 04:22:32 [warn] 4704#4704: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+2024/06/19 04:22:32 [warn] 4705#4705: could not build optimal types_hash, you should increase either types_hash_max_size: 1024 or types_hash_bucket_size: 64; ignoring types_hash_bucket_size
+
+
