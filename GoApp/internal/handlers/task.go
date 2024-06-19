@@ -17,7 +17,7 @@ const taskTemplate = `
 <li>
   <form hx-post="/checked" hx-trigger="click" hx-target="#task-list" hx-swap="innerHTML">
     {{if .Completed}}
-      <input type="checkbox" id="taskID{{ .ID }}" name="taskID" value="{{ .ID }}" checked="true">
+      <input type="checkbox" id="taskID{{ .ID }}" name="taskID" value="{{ .ID }}" checked>
     {{else}}
       <input type="checkbox" id="taskID{{ .ID }}" name="taskID" value="{{ .ID }}">
     {{end}}
@@ -76,9 +76,6 @@ func Checked(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-
-	var task models.Task
-	task.Completed = true
 
 	store.Checked(id)
 	GetTasks(w, r)
