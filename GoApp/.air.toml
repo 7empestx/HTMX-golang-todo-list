@@ -10,3 +10,8 @@ include_ext = ["go", "tmpl", "html"]
 [log]
 level = "info"
 
+# Enable live-reloading on the browser.
+[proxy]
+  enabled = true
+  proxy_port = 8090
+  app_port = 5000 
