@@ -2,55 +2,29 @@ package handlers
 
 import (
 	"fmt"
-	"html/template"
-	"log"
 	"net/http"
 	"strconv"
+  "context"
 
 	"github.com/7empestx/GoHTMXToDoList/internal/models"
 	"github.com/7empestx/GoHTMXToDoList/internal/store"
+	"github.com/7empestx/GoHTMXToDoList/internal/views"
 	"github.com/gorilla/mux"
 )
 
-// Template for task list item
-const taskTemplate = `
-<li>
-  <form hx-post="/checked" hx-trigger="click" hx-target="#task-list" hx-swap="innerHTML">
-    {{if .Completed}}
-      <input type="checkbox" id="taskID{{ .ID }}" name="taskID" value="{{ .ID }}" checked>
-    {{else}}
-      <input type="checkbox" id="taskID{{ .ID }}" name="taskID" value="{{ .ID }}">
-    {{end}}
-    <input type="hidden" name="taskID" value="{{ .ID }}">
-    <label for="taskID{{ .ID }}"> {{ .Description }}</label><br>
-  </form>
-</li>
-`
-
-// Render tasks using the shared template
-func renderTasks(w http.ResponseWriter, tasks []models.Task) {
-	w.Header().Set("Content-Type", "text/html")
-	t, err := template.New("webpage").Parse(taskTemplate)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for _, task := range tasks {
-		if err := t.Execute(w, task); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	}
+func renderComponent(w http.ResponseWriter, tasks []models.Task) {
+  component := views.Tasks(tasks) 
+  component.Render(context.Background(), w)
 }
 
 func FilterIncompleteTasks(w http.ResponseWriter, r *http.Request) {
 	tasks := store.FilterIncompleteTasks()
-	renderTasks(w, tasks)
+	renderComponent(w, tasks)
 }
 
 func FilterCompletedTasks(w http.ResponseWriter, r *http.Request) {
 	tasks := store.FilterCompletedTasks()
-	renderTasks(w, tasks)
+	renderComponent(w, tasks)
 }
 
 func Checked(w http.ResponseWriter, r *http.Request) {
@@ -82,8 +56,8 @@ func Checked(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetTasks(w http.ResponseWriter, r *http.Request) {
-	tasks := store.GetTasks()
-	renderTasks(w, tasks)
+  tasks := store.GetTasks()
+  renderComponent(w, tasks)
 }
 
 func AddTask(w http.ResponseWriter, r *http.Request) {

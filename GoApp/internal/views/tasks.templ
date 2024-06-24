@@ -1,0 +1,23 @@
+package views
+
+import (
+	"github.com/7empestx/GoHTMXToDoList/internal/models"
+  "strconv"
+)
+
+// Tasks is a template function that renders a list of tasks
+templ Tasks(tasks []models.Task) {
+  for _, task := range tasks {
+    <li>
+      <form hx-post="/checked" hx-trigger="click" hx-target="#task-list" hx-swap="innerHTML">
+        if task.Completed {
+          <input type="checkbox" id={strconv.Itoa(task.ID)} name="taskID" value={strconv.Itoa(task.ID)} checked>
+        } else {
+          <input type="checkbox" id={strconv.Itoa(task.ID)} name="taskID" value={strconv.Itoa(task.ID)}>
+        }
+        <input type="hidden" name="taskID" value={strconv.Itoa(task.ID)}> 
+        <label for={task.Description}> { task.Description }</label><br>
+      </form>
+    </li>
+  }
+}

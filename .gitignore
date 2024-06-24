@@ -9,3 +9,4 @@ tmp/main
 
 GoApp/bin
 venv/
+GoApp/internal/views/tasks_templ.go
