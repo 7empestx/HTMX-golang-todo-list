@@ -21,6 +21,7 @@ func InitDB(dataSourceName string) {
 	}
 
 	createTable()
+	addColumnIfNotExists("tasks", "addedFrom", "VARCHAR(45)")
 }
 
 func createTable() {
@@ -34,6 +35,31 @@ func createTable() {
 	_, err := db.Exec(query)
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+func addColumnIfNotExists(tableName, columnName, columnType string) {
+	var exists bool
+	query := `
+    SELECT COUNT(*) > 0
+    FROM information_schema.COLUMNS
+    WHERE TABLE_SCHEMA = DATABASE()
+    AND TABLE_NAME = ?
+    AND COLUMN_NAME = ?
+    `
+	err := db.QueryRow(query, tableName, columnName).Scan(&exists)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if !exists {
+		query = `
+        ALTER TABLE ` + tableName + ` ADD ` + columnName + ` ` + columnType + `;
+        `
+		_, err := db.Exec(query)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
@@ -61,8 +87,8 @@ var (
 	nextID = 1
 )
 
-func AddTask(description string) {
-	_, err := db.Exec("INSERT INTO tasks (description, completed) VALUES (?, ?)", description, false)
+func AddTask(description string, addedFrom string) {
+	_, err := db.Exec("INSERT INTO tasks (description, completed, addedFrom) VALUES (?, ?, ?)", description, false, addedFrom)
 	if err != nil {
 		log.Fatal(err)
 	}

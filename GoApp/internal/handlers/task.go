@@ -60,6 +60,16 @@ func GetTasks(w http.ResponseWriter, r *http.Request) {
   renderComponent(w, tasks)
 }
 
+func logIPAddress(r *http.Request) string {
+    // Try to get the IP address from the X-Forwarded-For header
+    ip := r.Header.Get("X-Forwarded-For")
+    if ip == "" {
+        // If the header is not set, get the IP from the remote address
+        ip = r.RemoteAddr
+    }
+    return ip
+}
+
 func AddTask(w http.ResponseWriter, r *http.Request) {
 	// Parse form data
 	if err := r.ParseForm(); err != nil {
@@ -68,13 +78,16 @@ func AddTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+  ip := logIPAddress(r)
+
 	// Extract the description from the form data
 	description := r.FormValue("description")
 
 	var task models.Task
+  task.AddedFrom = ip
 	task.Description = description
 
-	store.AddTask(task.Description)
+	store.AddTask(task.Description, task.AddedFrom)
 	GetTasks(w, r) // Call GetTasks to render the updated list
 }
 
