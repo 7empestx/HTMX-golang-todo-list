@@ -32,7 +32,7 @@ if [ ! -f cmd/server/main.go ]; then
 fi
 
 # Build the Go application
-go build -o bin/application cmd/server/main.go
+TEMPL_EXPERIMENT=rawgo templ generate && go build -o bin/application cmd/server/main.go
 echo "Go application built successfully."
 
 # Activate the EB CLI virtual environment
