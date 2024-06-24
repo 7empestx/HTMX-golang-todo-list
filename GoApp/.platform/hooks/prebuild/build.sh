@@ -8,4 +8,4 @@ echo "Current directory structure:"
 ls -R
 
 echo "Building Go application..."
-go build -o bin/application ./cmd/server/main.go
+TEMPL_EXPERIMENT=rawgo templ generate && go build -o bin/application ./cmd/server/main.go
