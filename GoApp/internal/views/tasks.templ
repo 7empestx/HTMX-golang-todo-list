@@ -1,22 +1,22 @@
 package views
 
 import (
-	"github.com/7empestx/GoHTMXToDoList/internal/models"
+	"github.com/7empestx/GoHTMXToDoList/internal/store/sqlc"
   "strconv"
 )
 
 // Tasks is a template function that renders a list of tasks
-templ Tasks(tasks []models.Task) {
+templ Tasks(tasks []storedb.Task) {
   for _, task := range tasks {
     <li>
       <form hx-post="/checked" hx-trigger="click" hx-target="#task-list" hx-swap="innerHTML">
-        if task.Completed {
-          <input type="checkbox" id={strconv.Itoa(task.ID)} name="taskID" value={strconv.Itoa(task.ID)} checked>
+        if task.Completed.Valid && task.Completed.Bool {
+          <input type="checkbox" id={strconv.Itoa(int(task.ID))} name="taskID" value={strconv.Itoa(int(task.ID))} checked>
         } else {
-          <input type="checkbox" id={strconv.Itoa(task.ID)} name="taskID" value={strconv.Itoa(task.ID)}>
+          <input type="checkbox" id={strconv.Itoa(int(task.ID))} name="taskID" value={strconv.Itoa(int(task.ID))}>
         }
-        <input type="hidden" name="taskID" value={strconv.Itoa(task.ID)}> 
-        <label for={task.Description}> { task.Description }</label><br>
+        <input type="hidden" name="taskID" value={strconv.Itoa(int(task.ID))}> 
+        <label for={task.Description.String}> { task.Description.String }</label><br>
       </form>
     </li>
   }

@@ -1,147 +1,118 @@
 package store
 
 import (
+	"context"
 	"database/sql"
-	"github.com/7empestx/GoHTMXToDoList/internal/models"
+	"fmt"
+
+	"github.com/7empestx/GoHTMXToDoList/internal/store/sqlc"
 	_ "github.com/go-sql-driver/mysql"
-	"log"
 )
 
-var db *sql.DB
+type Store struct {
+	db *sql.DB
+	q  *storedb.Queries
+}
 
-func InitDB(dataSourceName string) {
-	var err error
-	db, err = sql.Open("mysql", dataSourceName)
+var dbInstance *Store
+
+func InitDB(dataSourceName string) error {
+	db, err := sql.Open("mysql", dataSourceName)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("failed to open database: %w", err)
 	}
 
 	if err = db.Ping(); err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("failed to ping database: %w", err)
 	}
 
-	createTable()
-	addColumnIfNotExists("tasks", "addedFrom", "VARCHAR(45)")
+	dbInstance = &Store{
+		db: db,
+		q:  storedb.New(db),
+	}
+
+	return nil
 }
 
-func createTable() {
-	query := `
-    CREATE TABLE IF NOT EXISTS tasks (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        description TEXT,
-        completed BOOLEAN
-    );
-    `
-	_, err := db.Exec(query)
+func GetTasks(ctx context.Context) ([]storedb.Task, error) {
+	tasks, err := dbInstance.q.GetTasks(ctx)
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("failed to get tasks: %w", err)
 	}
+
+	var result []storedb.Task
+	for _, task := range tasks {
+		result = append(result, storedb.Task{
+			ID:          task.ID,
+			Description: task.Description,
+			Completed:   task.Completed,
+			Addedfrom:   task.Addedfrom,
+		})
+	}
+
+	return result, nil
 }
 
-func addColumnIfNotExists(tableName, columnName, columnType string) {
-	var exists bool
-	query := `
-    SELECT COUNT(*) > 0
-    FROM information_schema.COLUMNS
-    WHERE TABLE_SCHEMA = DATABASE()
-    AND TABLE_NAME = ?
-    AND COLUMN_NAME = ?
-    `
-	err := db.QueryRow(query, tableName, columnName).Scan(&exists)
+func AddTask(ctx context.Context, description string, addedFrom string) error {
+	err := dbInstance.q.AddTask(ctx, storedb.AddTaskParams{
+		Description: sql.NullString{String: description, Valid: true},
+		Completed:   sql.NullBool{Bool: false, Valid: true},
+		Addedfrom:   sql.NullString{String: addedFrom, Valid: true},
+	})
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("failed to add task: %w", err)
 	}
 
-	if !exists {
-		query = `
-        ALTER TABLE ` + tableName + ` ADD ` + columnName + ` ` + columnType + `;
-        `
-		_, err := db.Exec(query)
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
+	return nil
 }
 
-func GetTasks() []models.Task {
-    rows, err := db.Query("SELECT id, description, completed FROM tasks")
-    if err != nil {
-        log.Fatal(err)
-    }
-    defer rows.Close()
-
-    var tasks []models.Task
-    for rows.Next() {
-        var task models.Task
-        if err := rows.Scan(&task.ID, &task.Description, &task.Completed); err != nil {
-            log.Fatal(err)
-        }
-        tasks = append(tasks, task)
-    }
-
-    return tasks
-}
-
-var (
-	tasks  = []models.Task{}
-	nextID = 1
-)
-
-func AddTask(description string, addedFrom string) {
-	_, err := db.Exec("INSERT INTO tasks (description, completed, addedFrom) VALUES (?, ?, ?)", description, false, addedFrom)
+func Checked(ctx context.Context, id int32) error {
+	err := dbInstance.q.Checked(ctx, id)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("failed to check task: %w", err)
 	}
+
+	return nil
 }
 
-func Checked(id int) {
-	_, err := db.Exec("UPDATE tasks SET completed = NOT completed WHERE id = ?", id)
-	if err != nil {
-		log.Fatal(err)
-	}
+func DeleteTask(ctx context.Context, id int32) error {
+	return dbInstance.q.DeleteTask(ctx, id)
 }
 
-func DeleteTask(id int) {
-	_, err := db.Exec("DELETE FROM tasks WHERE id = ?", id)
+func FilterCompletedTasks(ctx context.Context) ([]storedb.Task, error) {
+	tasks, err := dbInstance.q.FilterCompletedTasks(ctx)
 	if err != nil {
-		log.Fatal(err)
+		return nil, fmt.Errorf("failed to filter completed tasks: %w", err)
 	}
+
+	var result []storedb.Task
+	for _, task := range tasks {
+		result = append(result, storedb.Task{
+			ID:          task.ID,
+			Description: task.Description,
+			Completed:   task.Completed,
+			Addedfrom:   task.Addedfrom,
+		})
+	}
+
+	return result, nil
 }
 
-func FilterCompletedTasks() []models.Task {
-	rows, err := db.Query("SELECT id, description, completed FROM tasks WHERE completed = TRUE")
+func FilterIncompleteTasks(ctx context.Context) ([]storedb.Task, error) {
+	tasks, err := dbInstance.q.FilterIncompleteTasks(ctx)
 	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-
-	var tasks []models.Task
-	for rows.Next() {
-		var task models.Task
-		if err := rows.Scan(&task.ID, &task.Description, &task.Completed); err != nil {
-			log.Fatal(err)
-		}
-		tasks = append(tasks, task)
+		return nil, fmt.Errorf("failed to filter incomplete tasks: %w", err)
 	}
 
-	return tasks
-}
-
-func FilterIncompleteTasks() []models.Task {
-	rows, err := db.Query("SELECT id, description, completed FROM tasks WHERE completed = FALSE")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-
-	var tasks []models.Task
-	for rows.Next() {
-		var task models.Task
-		if err := rows.Scan(&task.ID, &task.Description, &task.Completed); err != nil {
-			log.Fatal(err)
-		}
-		tasks = append(tasks, task)
+	var result []storedb.Task
+	for _, task := range tasks {
+		result = append(result, storedb.Task{
+			ID:          task.ID,
+			Description: task.Description,
+			Completed:   task.Completed,
+			Addedfrom:   task.Addedfrom,
+		})
 	}
 
-	return tasks
+	return result, nil
 }

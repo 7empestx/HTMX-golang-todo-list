@@ -1,43 +1,50 @@
 package handlers
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 	"strconv"
-  "context"
 
-	"github.com/7empestx/GoHTMXToDoList/internal/models"
 	"github.com/7empestx/GoHTMXToDoList/internal/store"
 	"github.com/7empestx/GoHTMXToDoList/internal/views"
+  "github.com/7empestx/GoHTMXToDoList/internal/store/sqlc"
 	"github.com/gorilla/mux"
 )
 
-func renderComponent(w http.ResponseWriter, tasks []models.Task) {
-  component := views.Tasks(tasks) 
-  component.Render(context.Background(), w)
+func renderComponent(w http.ResponseWriter, tasks []storedb.Task) {
+	component := views.Tasks(tasks)
+	component.Render(context.Background(), w)
 }
 
 func FilterIncompleteTasks(w http.ResponseWriter, r *http.Request) {
-	tasks := store.FilterIncompleteTasks()
+	ctx := context.Background()
+	tasks, err := store.FilterIncompleteTasks(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	renderComponent(w, tasks)
 }
 
 func FilterCompletedTasks(w http.ResponseWriter, r *http.Request) {
-	tasks := store.FilterCompletedTasks()
+	ctx := context.Background()
+	tasks, err := store.FilterCompletedTasks(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	renderComponent(w, tasks)
 }
 
 func Checked(w http.ResponseWriter, r *http.Request) {
-	// Parse form data
 	if err := r.ParseForm(); err != nil {
 		fmt.Println("Error parsing form:", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	// Extract the ID from the form data
 	idStr := r.FormValue("taskID")
-
 	if idStr == "" {
 		fmt.Println("No taskID received")
 		http.Error(w, "No taskID received", http.StatusBadRequest)
@@ -51,44 +58,50 @@ func Checked(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	store.Checked(id)
+	ctx := context.Background()
+	err = store.Checked(ctx, int32(id))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	GetTasks(w, r)
 }
 
 func GetTasks(w http.ResponseWriter, r *http.Request) {
-  tasks := store.GetTasks()
-  renderComponent(w, tasks)
+	ctx := context.Background()
+	tasks, err := store.GetTasks(ctx)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	renderComponent(w, tasks)
 }
 
 func logIPAddress(r *http.Request) string {
-    // Try to get the IP address from the X-Forwarded-For header
-    ip := r.Header.Get("X-Forwarded-For")
-    if ip == "" {
-        // If the header is not set, get the IP from the remote address
-        ip = r.RemoteAddr
-    }
-    return ip
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip == "" {
+		ip = r.RemoteAddr
+	}
+	return ip
 }
 
 func AddTask(w http.ResponseWriter, r *http.Request) {
-	// Parse form data
 	if err := r.ParseForm(); err != nil {
 		fmt.Println("Error parsing form:", err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-  ip := logIPAddress(r)
-
-	// Extract the description from the form data
+	ip := logIPAddress(r)
 	description := r.FormValue("description")
 
-	var task models.Task
-  task.AddedFrom = ip
-	task.Description = description
-
-	store.AddTask(task.Description, task.AddedFrom)
-	GetTasks(w, r) // Call GetTasks to render the updated list
+	ctx := context.Background()
+	err := store.AddTask(ctx, description, ip)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	GetTasks(w, r)
 }
 
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
@@ -98,6 +111,12 @@ func DeleteTask(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	store.DeleteTask(id)
-	GetTasks(w, r) // Call GetTasks to render the updated list
+
+	ctx := context.Background()
+	err = store.DeleteTask(ctx, int32(id))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	GetTasks(w, r)
 }
