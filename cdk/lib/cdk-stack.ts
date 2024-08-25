@@ -5,6 +5,7 @@ import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import * as route53 from 'aws-cdk-lib/aws-route53';
 import * as route53Targets from 'aws-cdk-lib/aws-route53-targets';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
 
 export class CdkStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -71,6 +72,28 @@ export class CdkStack extends Stack {
       target: route53.RecordTarget.fromAlias(
         new route53Targets.CloudFrontTarget(htmxGoDistribution)
       ),
+    });
+
+    new cognito.UserPool(this, 'HTMXGoUserPool', {
+      userPoolName: 'HTMXGoUserPool',
+      selfSignUpEnabled: true,
+      signInAliases: {
+        email: true,
+      },
+      autoVerify: {
+        email: true,
+      },
+      passwordPolicy: {
+        minLength: 8,
+        requireDigits: false,
+        requireLowercase: false,
+        requireSymbols: false,
+        requireUppercase: false,
+      },
+      accountRecovery: cognito.AccountRecovery.EMAIL_ONLY,
+      userVerification: {
+        emailStyle: cognito.VerificationEmailStyle.CODE,
+      },
     });
   }
 }
