@@ -23,6 +23,8 @@ func main() {
 	store.InitDB(dataSourceName)
 
 	r := mux.NewRouter()
+  r.HandleFunc("/login", handlers.Login).Methods("GET")
+  r.HandleFunc("/home", handlers.Home).Methods("GET")
 	r.HandleFunc("/tasks", handlers.GetTasks).Methods("GET")
 	r.HandleFunc("/tasks", handlers.AddTask).Methods("POST")
 	r.HandleFunc("/completed", handlers.FilterCompletedTasks).Methods("GET")

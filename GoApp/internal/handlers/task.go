@@ -8,9 +8,30 @@ import (
 
 	"github.com/7empestx/GoHTMXToDoList/internal/store"
 	"github.com/7empestx/GoHTMXToDoList/internal/views"
+	"github.com/7empestx/GoHTMXToDoList/internal/login"
   "github.com/7empestx/GoHTMXToDoList/internal/store/sqlc"
 	"github.com/gorilla/mux"
 )
+
+func Home(w http.ResponseWriter, r *http.Request) {
+  fmt.Println("Home handler called")
+  component := login.Home()
+  err := component.Render(r.Context(), w)
+  if err != nil {
+    fmt.Printf("Error rendering home component: %v", err)
+    http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+  }
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+  fmt.Println("Login handler called")
+  component := login.Login()
+  err := component.Render(r.Context(), w)
+  if err != nil {
+    fmt.Printf("Error rendering login component: %v", err)
+    http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+  }
+}
 
 func renderComponent(w http.ResponseWriter, tasks []storedb.Task) {
 	component := views.Tasks(tasks)
