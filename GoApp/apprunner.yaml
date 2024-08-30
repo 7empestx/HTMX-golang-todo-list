@@ -1,0 +1,8 @@
+on: 1.0
+runtime: go1.x
+build:
+    commands:
+          - go mod download
+          - go build -o main ./cmd/server
+    run:
+        command: ./main
