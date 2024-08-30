@@ -2,8 +2,6 @@ version: 1.0
 runtime: go1
 build:
   commands:
-     pre-build:
-       - go mod download
      build:
        - go build -o bin/application ./cmd/server
 run:
