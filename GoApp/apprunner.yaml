@@ -3,7 +3,6 @@ runtime: go1
 build:
   commands:
      build:
-       - cd /GoApp
        - go mod download
        - go mod tidy
        - go build -o bin/application ./cmd/server
