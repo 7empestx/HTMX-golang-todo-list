@@ -1,8 +1,11 @@
-on: 1.0
-runtime: go1.x
+version: 1.0
+runtime: go1
 build:
-    commands:
-          - go mod download
-          - go build -o main ./cmd/server
-    run:
-        command: ./main
+  commands:
+     build:
+       - go build main.go
+     run:
+       runtime-version: 1.18.7
+       command: ./main
+       network:
+         port: 5000
