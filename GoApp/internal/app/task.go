@@ -1,4 +1,4 @@
-package handlers
+package app 
 
 import (
 	"context"
@@ -11,7 +11,20 @@ import (
 	"github.com/7empestx/GoHTMXToDoList/internal/login"
   "github.com/7empestx/GoHTMXToDoList/internal/store/sqlc"
 	"github.com/gorilla/mux"
+  "github.com/aws/aws-sdk-go/aws"
+  cognito "github.com/aws/aws-sdk-go/service/cognitoidentityprovider" 
+
+  "crypto/hmac"
+  "crypto/sha256"
+  "encoding/base64"
 )
+
+var app *App
+
+// InitApp initializes the App struct
+func InitApp(a *App) {
+    app = a
+}
 
 func Home(w http.ResponseWriter, r *http.Request) {
   fmt.Println("Home handler called")
@@ -23,14 +36,85 @@ func Home(w http.ResponseWriter, r *http.Request) {
   }
 }
 
+
 func Login(w http.ResponseWriter, r *http.Request) {
-  fmt.Println("Login handler called")
+  if r.Method == "GET" {
+    loginGet(w, r)
+  } else if r.Method == "POST" {
+    loginPost(w, r);
+  } else {
+    http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+  }
+}
+
+func loginGet(w http.ResponseWriter, r *http.Request) {
   component := login.Login()
   err := component.Render(r.Context(), w)
   if err != nil {
     fmt.Printf("Error rendering login component: %v", err)
     http.Error(w, "Internal Server Error", http.StatusInternalServerError)
   }
+}
+
+func computeSecretHash(clientSecret string, username string, clientId string) string {
+	mac := hmac.New(sha256.New, []byte(clientSecret))
+	mac.Write([]byte(username + clientId))
+
+	return base64.StdEncoding.EncodeToString(mac.Sum(nil))
+}
+
+func loginPost(w http.ResponseWriter, r *http.Request) {
+  fmt.Println("Login POST handler called")
+
+	if err := r.ParseForm(); err != nil {
+		fmt.Println("Error parsing form:", err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	email := r.FormValue("email")
+  password := r.FormValue("password")
+
+	if email == "" {
+    http.Error(w, "Email is required", http.StatusBadRequest)
+		return
+	}
+  if password == "" {
+    http.Error(w, "Password is required", http.StatusBadRequest)
+    return
+  }
+
+  fmt.Println(email);
+  fmt.Println(password);		
+
+  secretHash := computeSecretHash(app.AppClientSecret, *aws.String(email), app.AppClientID)
+
+  authTry := &cognito.InitiateAuthInput{
+    AuthFlow: aws.String("USER_PASSWORD_AUTH"),
+    AuthParameters: map[string]*string{
+      "USERNAME": aws.String(email),
+      "PASSWORD": aws.String(password),
+      "SECRET_HASH": aws.String(secretHash), 
+    },
+    ClientId: aws.String(app.AppClientID),
+  }
+
+
+  _, err := app.CognitoClient.InitiateAuth(authTry)
+
+	if err != nil {
+    //http.Error(w, "Authentication failed", http.StatusUnauthorized)
+    if(err.Error() == "NotAuthorizedException: Incorrect username or password.") {
+      fmt.Println("Incorrect username or password")
+      component := login.IncorrectLogin()
+      component.Render(context.Background(), w)
+    }
+		return
+	}
+
+  component := login.SuccessfulLogin()
+  component.Render(context.Background(), w)
+
 }
 
 func renderComponent(w http.ResponseWriter, tasks []storedb.Task) {

@@ -23,7 +23,7 @@ func Login() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<body id=\"login-body\" class=\"container border py-3 my-3\"><div class=\"row-md-1 ms-auto\"><div class=\"col-md-1 ms-auto\"><div><button hx-get=\"/home\" hx-trigger=\"click\" hx-target=\"#todo-list-body\">Home</button></div></div><h1>Login</h1><form hx-post=\"/login\" hx-trigger=\"submit\" hx-target=\"#task-list\" hx-swap=\"innerHTML\"><input type=\"text\" name=\"email\" placeholder=\"Email\" required> <input type=\"password\" name=\"password\" placeholder=\"Password\" required> <button type=\"submit\">Login</button></form><div class=\"button-container\"><button type=\"submit\">Sign Up</button> <button type=\"submit\">Forgot Password</button></div></div></body>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1>Login</h1><body id=\"login-body\" class=\"container border py-3 my-3\"><div class=\"row-md-1 ms-auto\"><div class=\"col-md-1 ms-auto\"><div><button hx-get=\"/home\" hx-trigger=\"click\" hx-target=\"#todo-list-body\">Home</button></div></div><form hx-post=\"/login\" hx-trigger=\"submit\" hx-target=\"#login-response\" hx-swap=\"innerHTML\"><input type=\"text\" name=\"email\" placeholder=\"Email\" required> <input type=\"password\" name=\"password\" placeholder=\"Password\" required> <button type=\"submit\">Login</button></form><div class=\"button-container\"><button type=\"submit\">Sign Up</button> <button type=\"submit\">Forgot Password</button></div><div class=\"list-container px-3 mx-3\" id=\"login-response\" hx-trigger=\"load\"><!-- Login form will be dynamically loaded here --></div></div></body>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -47,7 +47,55 @@ func Home() templ.Component {
 			templ_7745c5c3_Var2 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"row\"><div class=\"col-md-1 ms-auto\"><div><button hx-get=\"/login\" hx-trigger=\"click\" hx-target=\"#todo-list-body\">Login</button></div></div></div><div><h1>To-Do List</h1><form hx-post=\"/tasks\" hx-trigger=\"submit\" hx-target=\"#task-list\" hx-swap=\"innerHTML\"><input type=\"text\" name=\"description\" placeholder=\"New Task\" required> <button type=\"submit\">Add Task</button></form><div class=\"button-container\" hx-target=\"#task-list\"><button hx-get=\"/tasks\">Filter All Tasks</button> <button hx-get=\"/completed\">Filter Completed Tasks</button> <button hx-get=\"/incomplete\">Filter Incomplete Tasks</button></div><div class=\"list-container px-3 mx-3\" id=\"task-list\" hx-get=\"/tasks\" hx-trigger=\"load\" hx-swap=\"innerHTML\"><!-- Tasks will be dynamically loaded here --></div></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1>Home</h1><div class=\"row\"><div class=\"col-md-1 ms-auto\"><div><button hx-get=\"/login\" hx-trigger=\"click\" hx-target=\"#todo-list-body\">Login</button></div></div></div><div><h2>To-Do List</h2><form hx-post=\"/tasks\" hx-trigger=\"submit\" hx-target=\"#task-list\" hx-swap=\"innerHTML\"><input type=\"text\" name=\"description\" placeholder=\"New Task\" required> <button type=\"submit\">Add Task</button></form><div class=\"button-container\" hx-target=\"#task-list\"><button hx-get=\"/tasks\">Filter All Tasks</button> <button hx-get=\"/completed\">Filter Completed Tasks</button> <button hx-get=\"/incomplete\">Filter Incomplete Tasks</button></div><div class=\"list-container px-3 mx-3\" id=\"task-list\" hx-get=\"/tasks\" hx-trigger=\"load\" hx-swap=\"innerHTML\"><!-- Tasks will be dynamically loaded here --></div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func IncorrectLogin() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var3 == nil {
+			templ_7745c5c3_Var3 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("Incorrect login credentials. Please try again.")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if !templ_7745c5c3_IsBuffer {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteTo(templ_7745c5c3_W)
+		}
+		return templ_7745c5c3_Err
+	})
+}
+
+func SuccessfulLogin() templ.Component {
+	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
+		if !templ_7745c5c3_IsBuffer {
+			templ_7745c5c3_Buffer = templ.GetBuffer()
+			defer templ.ReleaseBuffer(templ_7745c5c3_Buffer)
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var4 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var4 == nil {
+			templ_7745c5c3_Var4 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<h1>Successful Login</h1><p>Welcome back!</p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
