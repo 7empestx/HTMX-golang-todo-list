@@ -1,9 +1,9 @@
 version: "2"
 sql:
-  - schema: "internal/store/schema/schema.sql"
-    queries: "internal/store/queries/query.sql"
+  - schema: "internal/db/store/schema/schema.sql"
+    queries: "internal/db/store/queries/query.sql"
     engine: "mysql"
     gen:
       go:
         package: "storedb"
-        out: "internal/store/sqlc"
+        out: "internal/db/store/sqlc"

@@ -6,6 +6,7 @@ import (
   "github.com/aws/aws-sdk-go/aws/session"
   cognito "github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
   "github.com/7empestx/GoHTMXToDoList/internal/app"
+  "github.com/7empestx/GoHTMXToDoList/internal/router/login"
 )
 
 func Init() {
@@ -19,12 +20,13 @@ func Init() {
 	appClientSecret := os.Getenv("COGNITO_APP_CLIENT_SECRET")
 
 	// Create App instance
-	appInstance := &app.App{
+	appInstance := &app.App {
 		CognitoClient:   cognitoClient,
 		UserPoolID:      userPoolID,
 		AppClientID:     appClientID,
 		AppClientSecret: appClientSecret,
 	}
 
-  app.InitApp(appInstance)
+  login.InitApp(appInstance)
 }
+

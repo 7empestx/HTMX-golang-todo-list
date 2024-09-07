@@ -5,7 +5,7 @@ import (
   "os"
   "database/sql"
   "sync"
-  "github.com/7empestx/GoHTMXToDoList/internal/store/sqlc"
+  "github.com/7empestx/GoHTMXToDoList/internal/db/store/sqlc"
 )
 
 type Store struct {

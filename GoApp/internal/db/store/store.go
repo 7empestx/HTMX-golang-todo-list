@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/7empestx/GoHTMXToDoList/internal/store/sqlc"
+	"github.com/7empestx/GoHTMXToDoList/internal/db/store/sqlc"
   "github.com/7empestx/GoHTMXToDoList/internal/db"
 	_ "github.com/go-sql-driver/mysql"
 )
