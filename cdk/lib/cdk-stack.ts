@@ -147,7 +147,7 @@ export class CdkStack extends Stack {
     // Create the EC2 instance
     const ec2Instance = new ec2.Instance(this, 'GoAppInstance', {
       vpc,
-      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
+      instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.NANO),
       machineImage: new ec2.AmazonLinuxImage({ generation: ec2.AmazonLinuxGeneration.AMAZON_LINUX_2 }),
       securityGroup: securityGroup,
       role: role,
