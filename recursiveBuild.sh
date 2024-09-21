@@ -51,7 +51,7 @@ cd ..
 
 # Restart the Elastic Beanstalk environment
 echo "Restarting the Elastic Beanstalk environment..."
-aws elasticbeanstalk restart-app-server --environment-id e-rvzd3wseg5 --region us-east-2
+aws elasticbeanstalk restart-app-server --environment-id e-r36cz5jntw --region us-east-2
 echo "Elastic Beanstalk environment restarted successfully."
 
 echo "Synthesizing the CDK application..."
@@ -71,6 +71,6 @@ cdk deploy --require-approval never
 echo "CDK stack deployed successfully."
 
 echo "Invalidating the CloudFront cache..."
-aws cloudfront create-invalidation --distribution-id E3UZMP1RS11EPV --paths "/*" | cat
+aws cloudfront create-invalidation --distribution-id EBED81QRRI7NP --paths "/*" | cat
 
 echo "Build and deployment script completed."

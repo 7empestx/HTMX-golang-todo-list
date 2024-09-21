@@ -1,17 +1,18 @@
 branch-defaults:
   default:
-    environment: GoHTMX-env3
+    environment: HTMXGo
     group_suffix: null
 global:
   application_name: GoApp2
   branch: null
+  default_ec2_keyname: MacbookPersonal
   default_platform: Go 1 running on 64bit Amazon Linux 2023
   default_region: us-east-2
   include_git_submodules: true
   instance_profile: null
   platform_name: null
   platform_version: null
-  profile: null 
+  profile: eb-cli
   repository: null
   sc: null
   workspace_type: Application

@@ -24,6 +24,6 @@ func Init() {
 	r.PathPrefix("/").Handler(fs)
 
   // Serve static files  
-	log.Fatal(http.ListenAndServe(":80", r))
+	log.Fatal(http.ListenAndServe(":5000", r))
   
 }
