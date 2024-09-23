@@ -6,6 +6,7 @@ import (
   "database/sql"
   "sync"
   "github.com/7empestx/GoHTMXToDoList/internal/db/store/sqlc"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Store struct {
@@ -44,6 +45,8 @@ func Init() error {
 			db: db,
 			Q:  storedb.New(db),
 		}
+
+    fmt.Println("Database connection successful")
 	})
 
 	return initErr
