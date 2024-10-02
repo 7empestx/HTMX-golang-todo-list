@@ -24,11 +24,13 @@ func InitDB(dataSourceName string) error {
 	if err = db.Ping(); err != nil {
 		return fmt.Errorf("failed to ping database: %w", err)
 	}
+  fmt.Println("Connected to database")
 
 	dbInstance = &Store{
 		db: db,
 		Q:  storedb.New(db),
 	}
+  fmt.Println("Store initialized")
 
 	return nil
 }
@@ -46,5 +48,8 @@ func Init() error {
 }
 
 func GetStore() (*Store, error) {
+  if dbInstance == nil {
+    return nil, fmt.Errorf("Store not initialized")
+  }
 	return dbInstance, nil
 }

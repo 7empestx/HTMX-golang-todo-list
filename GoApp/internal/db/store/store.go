@@ -11,6 +11,7 @@ import (
 )
 
 func GetTasks(ctx context.Context) ([]storedb.Task, error) {
+  fmt.Println("GetTasks")
 	store, err := db.GetStore()
 	if err != nil {
 		return nil, err
