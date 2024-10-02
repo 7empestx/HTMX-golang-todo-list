@@ -4,7 +4,6 @@ import (
   "fmt"
   "os"
   "database/sql"
-  "sync"
   "github.com/7empestx/GoHTMXToDoList/internal/db/store/sqlc"
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -14,11 +13,25 @@ type Store struct {
 	Q  *storedb.Queries
 }
 
-var (
-	dbInstance *Store
-	once       sync.Once
-	initErr    error
-)
+var dbInstance *Store
+
+func InitDB(dataSourceName string) error {
+	db, err := sql.Open("mysql", dataSourceName)
+	if err != nil {
+		return fmt.Errorf("failed to open database: %w", err)
+	}
+
+	if err = db.Ping(); err != nil {
+		return fmt.Errorf("failed to ping database: %w", err)
+	}
+
+	dbInstance = &Store{
+		db: db,
+		Q:  storedb.New(db),
+	}
+
+	return nil
+}
 
 func Init() error {
   dbHost := os.Getenv("RDS_HOSTNAME")
@@ -27,29 +40,9 @@ func Init() error {
   dbPassword := os.Getenv("RDS_PASSWORD")
 
   dataSourceName := fmt.Sprintf("%s:%s@tcp(%s)/%s", dbUser, dbPassword, dbHost, dbName)
+  InitDB(dataSourceName)
   fmt.Println(dataSourceName)
-
-	once.Do(func() {
-		db, err := sql.Open("mysql", dataSourceName)
-		if err != nil {
-			initErr = fmt.Errorf("failed to open database: %w", err)
-			return
-		}
-
-		if err = db.Ping(); err != nil {
-			initErr = fmt.Errorf("failed to ping database: %w", err)
-			return
-		}
-
-		dbInstance = &Store{
-			db: db,
-			Q:  storedb.New(db),
-		}
-
-    fmt.Println("Database connection successful")
-	})
-
-	return initErr
+  return nil
 }
 
 func GetStore() (*Store, error) {
