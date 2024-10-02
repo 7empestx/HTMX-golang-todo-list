@@ -53,8 +53,5 @@ func Init() error {
 }
 
 func GetStore() (*Store, error) {
-	if dbInstance == nil {
-		return nil, fmt.Errorf("database not initialized, call InitDB first")
-	}
 	return dbInstance, nil
 }
