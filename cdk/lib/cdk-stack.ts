@@ -47,7 +47,11 @@ export class CdkStack extends Stack {
           viewerProtocolPolicy:
             cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
           allowedMethods: cloudfront.AllowedMethods.ALLOW_ALL,
-          cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+          cachePolicy: cloudfront.CachePolicy.fromCachePolicyId(
+            this, 
+            "UseOriginCacheControlHeaders-QueryStrings",
+            "4cc15a8a-d715-48a4-82b8-cc0b614638fe"
+          ),
         },
         errorResponses: [
           {
