@@ -40,42 +40,66 @@ A modern, full-stack todo list application built with Go and HTMX, deployed on A
 
 ### Prerequisites
 
+**For Local Development:**
 - Go 1.22+
+
+**For Production Deployment:**
 - Node.js 14+ (for CDK)
 - Python 3.10+ (for AWS CLI and EB CLI)
 - AWS CLI
 - AWS CDK CLI
 - EB CLI (Elastic Beanstalk)
 
-### Local Development
+### Quick Start (Simplest Method)
 
 1. **Clone the repository**
    ```bash
    git clone https://github.com/7empestx/GoHTMXToDoList.git
-   cd HTMX-golang-todo-list
+   cd HTMX-golang-todo-list/GoApp
    ```
 
 2. **Install Go dependencies**
    ```bash
-   cd GoApp
    go mod tidy
    ```
 
-3. **Install development tools**
+3. **Run the server**
    ```bash
-   # Install templ
-   go install github.com/a-h/templ/cmd/templ@latest
-
-   # Install sqlc
-   go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
-
-   # Install air (hot reload)
-   go install github.com/air-verse/air@latest
+   go run cmd/server/main.go
    ```
 
-4. **Set up environment variables**
+4. **Access the application**
+   - Local server: http://localhost:5000
+   - Uses in-memory storage (no database setup required)
+   - Data resets when server restarts
 
-   Create a `.env` file or set the following environment variables:
+### Local Development (With Hot Reload)
+
+1. **Install development tools**
+   ```bash
+   # Install templ (template engine)
+   go install github.com/a-h/templ/cmd/templ@latest
+
+   # Install air (hot reload) - optional but recommended
+   go install github.com/air-verse/air@latest
+
+   # Add Go bin to PATH
+   export PATH=$PATH:$(go env GOPATH)/bin
+   ```
+
+2. **Run with hot reload**
+   ```bash
+   cd GoApp
+   air
+   ```
+   - Access via http://localhost:8090 (Air proxy)
+   - Auto-reloads on file changes (.go, .templ, .sql)
+
+### Production Setup (With Database)
+
+1. **Set up environment variables**
+
+   For production with database and authentication:
    ```bash
    export RDS_HOSTNAME=your-db-host
    export RDS_DB_NAME=your-db-name
@@ -86,19 +110,12 @@ A modern, full-stack todo list application built with Go and HTMX, deployed on A
    export COGNITO_APP_CLIENT_SECRET=your-app-client-secret
    ```
 
-5. **Generate code and run**
+2. **Build and run**
    ```bash
-   # Generate templ templates and sqlc queries
    templ generate
-   sqlc generate
-
-   # Run with hot reload
-   air
+   go build -o bin/application cmd/server/main.go
+   ./bin/application
    ```
-
-6. **Access the application**
-   - Development server: http://localhost:8090 (via Air proxy)
-   - Direct access: http://localhost:8080
 
 ## Project Structure
 
@@ -146,17 +163,35 @@ CREATE TABLE IF NOT EXISTS tasks (
 
 ### Development
 ```bash
+# Quick start - run server (from GoApp/)
+go run cmd/server/main.go
+# Access at http://localhost:5000
+
 # Hot reload (from GoApp/)
 air
+# Access at http://localhost:8090
 
-# Generate templ templates
+# Generate templ templates (after modifying .templ files)
 templ generate
 
-# Generate sqlc queries
+# Generate sqlc queries (after modifying SQL files)
 sqlc generate
 
 # Build for production
-TEMPL_EXPERIMENT=rawgo templ generate && go build -o bin/application cmd/server/main.go
+templ generate && go build -o bin/application cmd/server/main.go
+
+# Run production binary
+./bin/application
+```
+
+### Stopping the Server
+```bash
+# If running in foreground
+Ctrl+C
+
+# If running in background, find and kill process
+lsof -i :5000
+kill <PID>
 ```
 
 ### Infrastructure
@@ -193,6 +228,7 @@ Push to the `main` branch triggers GitHub Actions workflow that:
 - **Type Safety**: sqlc generates type-safe database queries; templ provides type-safe templates
 - **HTMX Integration**: Dynamic updates without complex JavaScript frameworks
 - **Server-Side Rendering**: All HTML generated on the server for better SEO and performance
+- **Flexible Storage**: Automatic fallback to in-memory storage for easy local development
 - **Singleton Pattern**: Database connection managed as singleton in `db.GetStore()`
 - **AWS Best Practices**: CloudFront CDN, RDS for persistence, Cognito for auth
 - **Infrastructure as Code**: Complete infrastructure defined in CDK

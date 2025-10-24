@@ -32,8 +32,21 @@ The application consists of three main components:
 
 ### Go Application (from GoApp/ directory)
 
+**Quick start (simple, no database required):**
+```bash
+go run cmd/server/main.go
+# Runs on port 5000 with in-memory storage
+# Access via http://localhost:5000
+# Note: Data resets when server restarts
+```
+
 **Local development with hot reload:**
 ```bash
+# Install air if not already installed
+go install github.com/air-verse/air@latest
+export PATH=$PATH:$(go env GOPATH)/bin
+
+# Run with hot reload
 air
 # Watches .go, .templ, .sql files and rebuilds on changes
 # Runs sqlc generate, templ generate, then builds to tmp/main
@@ -109,8 +122,12 @@ cdk diff
 - Schema: `internal/db/store/schema/schema.sql` (tasks table)
 - Queries: `internal/db/store/queries/query.sql` (CRUD operations)
 - Generated code: `internal/db/store/sqlc/`
-- Connection: RDS MySQL via environment variables (RDS_HOSTNAME, RDS_DB_NAME, RDS_USERNAME, RDS_PASSWORD)
+- **Storage Options**:
+  - **In-Memory**: Default for local development (no database needed)
+  - **MySQL**: Production via RDS (requires env vars: RDS_HOSTNAME, RDS_DB_NAME, RDS_USERNAME, RDS_PASSWORD)
+- Automatic fallback: If no database credentials are set, uses in-memory storage
 - Singleton pattern: `db.Init()` creates global `dbInstance` accessible via `db.GetStore()`
+- Querier interface: Allows swapping between in-memory and database implementations
 
 ### Authentication Flow
 
